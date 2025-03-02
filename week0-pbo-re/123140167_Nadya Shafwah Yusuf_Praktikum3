@@ -1,0 +1,17 @@
+nama = input("Masukkan Nama: ")
+nim = input("Masukkan NIM: ")
+resolusi = input("Masukkan Resolusi di Tahun ini: ")
+
+with open("Me.txt", "w") as file:
+    file.write(f"Nama: {nama}\n")
+    file.write(f"NIM: {nim}\n")
+    file.write(f"Resolusi di Tahun ini: {resolusi}\n")
+
+print("File Me.txt telah berhasil dibuat!")
+
+# membuka dan membaca isi file Me.txt
+with open("Me.txt", "r") as file:
+    isi_file = file.read()
+
+print("\nIsi file Me.txt:")
+print(isi_file)
