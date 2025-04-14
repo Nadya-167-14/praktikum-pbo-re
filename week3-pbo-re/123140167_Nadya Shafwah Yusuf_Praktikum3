@@ -1,0 +1,109 @@
+from abc import ABC, abstractmethod
+
+class Animal(ABC):
+    def __init__(self, name, age):
+        if not name:
+            raise ValueError("Nama hewan tidak boleh kosong.")
+        if not isinstance(age, int) or age <= 0:
+            raise ValueError("Usia harus berupa angka bulat positif.")
+        
+        self.__name = name        
+        self.__age = age          
+
+    @abstractmethod
+    def make_sound(self):
+        pass
+
+    def get_name(self):
+        return self.__name
+
+    def get_age(self):
+        return self.__age
+
+    def set_name(self, name):
+        if name:
+            self.__name = name
+        else:
+            raise ValueError("Nama tidak boleh kosong.")
+
+    def set_age(self, age):
+        if isinstance(age, int) and age > 0:
+            self.__age = age
+        else:
+            raise ValueError("Usia harus berupa angka bulat positif.")
+
+    def info(self):
+        return f"{self.__class__.__name__} - Nama: {self.__name}, Usia: {self.__age} tahun."
+      
+class Lion(Animal):
+    def make_sound(self):
+        return "Aummmm!"
+
+class Elephant(Animal):
+    def make_sound(self):
+        return "Bruuuuuhhh!"
+
+class Monkey(Animal):
+    def make_sound(self):
+        return "Ooh ooh aah aah!"
+
+# Manajemen Kebun Binatang
+class Zoo:
+    def __init__(self):
+        self.__animals = []
+
+    def tambah_hewan(self, jenis, nama, usia):
+        try:
+            if jenis.lower() == "singa":
+                hewan = Lion(nama, usia)
+            elif jenis.lower() == "gajah":
+                hewan = Elephant(nama, usia)
+            elif jenis.lower() == "monyet":
+                hewan = Monkey(nama, usia)
+            else:
+                raise ValueError("Jenis hewan tidak dikenali. Coba: Singa, Gajah, atau Monyet.")
+            
+            self.__animals.append(hewan)
+            print(f"{jenis.capitalize()} bernama '{nama}' berhasil ditambahkan!")
+        except ValueError as e:
+            print(f"Error: {e}")
+
+    def tampilkan_hewan(self):
+        if not self.__animals:
+            print("Belum ada hewan di kebun binatang.")
+        else:
+            print("Daftar Hewan di Kebun Binatang:")
+            for idx, animal in enumerate(self.__animals, 1):
+                print(f"{idx}. {animal.info()} - Suara: {animal.make_sound()}")
+
+# Main Program
+def main():
+    zoo = Zoo()
+    while True:
+        print("\n=== Menu Kebun Binatang ===")
+        print("1. Tambah Hewan")
+        print("2. Tampilkan Hewan")
+        print("3. Keluar")
+        pilihan = input("Pilih menu (1/2/3): ")
+
+        if pilihan == "1":
+            jenis = input("Masukkan jenis hewan (Singa/Gajah/Monyet): ")
+            nama = input("Masukkan nama hewan: ")
+            try:
+                usia = int(input("Masukkan usia hewan: "))
+            except ValueError:
+                print("Usia harus berupa angka.")
+                continue
+            zoo.tambah_hewan(jenis, nama, usia)
+
+        elif pilihan == "2":
+            zoo.tampilkan_hewan()
+
+        elif pilihan == "3":
+            print("Keluar dari program.")
+            break
+        else:
+            print("Pilihan tidak valid. Masukkan angka 1-3.")
+
+if __name__ == "__main__":
+    main()
