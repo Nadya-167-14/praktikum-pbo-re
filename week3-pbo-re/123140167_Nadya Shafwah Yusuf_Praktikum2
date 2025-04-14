@@ -1,0 +1,59 @@
+class ToDoList:
+    def __init__(self):
+        self.daftar_tugas = []
+
+    def tambah_tugas(self, tugas):
+        if not tugas.strip():
+            raise ValueError("Tugas tidak boleh kosong.")
+        self.daftar_tugas.append(tugas)
+        print("Tugas berhasil ditambahkan!")
+
+    def hapus_tugas(self, nomor):
+        try:
+            index = int(nomor) - 1
+            if index < 0 or index >= len(self.daftar_tugas):
+                raise IndexError("Tugas dengan nomor tersebut tidak ditemukan.")
+            tugas = self.daftar_tugas.pop(index)
+            print(f"Tugas '{tugas}' berhasil dihapus.")
+        except ValueError:
+            print("Input harus berupa angka.")
+        except IndexError as e:
+            print(f"Error: {e}")
+
+    def tampilkan_tugas(self):
+        if not self.daftar_tugas:
+            print("Daftar tugas kosong.")
+        else:
+            print("Daftar Tugas:")
+            for i, tugas in enumerate(self.daftar_tugas, start=1):
+                print(f"- {tugas}")
+
+    def jalankan(self):
+        while True:
+            try:
+                print("\nPilih aksi:")
+                print("1. Tambah tugas")
+                print("2. Hapus tugas")
+                print("3. Tampilkan daftar tugas")
+                print("4. Keluar")
+                pilihan = input("Masukkan pilihan (1/2/3/4): ")
+
+                if pilihan == "1":
+                    tugas = input("Masukkan tugas yang ingin ditambahkan: ")
+                    self.tambah_tugas(tugas)
+                elif pilihan == "2":
+                    nomor = input("Masukkan nomor tugas yang ingin dihapus: ")
+                    self.hapus_tugas(nomor)
+                elif pilihan == "3":
+                    self.tampilkan_tugas()
+                elif pilihan == "4":
+                    print("Keluar dari program.")
+                    break
+                else:
+                    print("Pilihan tidak valid. Masukkan angka 1-4.")
+            except Exception as e:
+                print(f"Terjadi kesalahan: {e}")
+
+# Jalankan program
+app = ToDoList()
+app.jalankan()
