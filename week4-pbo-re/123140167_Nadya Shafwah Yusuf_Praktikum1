@@ -1,0 +1,59 @@
+import random
+
+class minesweeper:
+    def __init__(self, tinggi=3, lebar=3):
+        self.tinggi = tinggi
+        self.lebar = lebar
+        self.board = [['?' for _ in range(lebar)] for _ in range(tinggi)]
+        self.lokasi_bom = (random.randint(0, tinggi - 1), random.randint(0, lebar - 1))
+        self.terbuka = 0
+        self.batas_aman = tinggi * lebar - 1
+        self.status_game = False
+
+    def tampilkan_board(self):
+        for deretan in self.board:
+            print(' '.join(deretan))
+        print('-' * 30)
+
+    def koordinat_valid(self, y, x):
+        return 0 <= y < self.tinggi and 0 <= x < self.lebar
+
+    def buka_kotak(self, y_user, x_user):
+        y = y_user - 1
+        x = x_user - 1
+
+        if not self.koordinat_valid(y, x):
+            print("Oops! Koordinat salah!")
+            return
+
+        if (y, x) == self.lokasi_bom:
+            self.board[y][x] = 'X'
+            self.tampilkan_board()
+            print("Boom! Kamu kalah!")
+            self.status_game = True
+        elif self.board[y][x] == '?':
+            self.board[y][x] = 'O'
+            self.terbuka += 1
+            if self.terbuka == self.batas_aman:
+                self.tampilkan_board()
+                print("Selamat! Kamu menang!")
+                self.status_game = True
+        else:
+            print("Kotak ini sudah kamu buka, sob!")
+
+    def play(self):
+        print("<<< MInesweeper 3x3 >>>")
+        print("Tebak kotak yang aman! Baris dan kolom dari 1 sampai 3 ya!")
+
+        while not self.status_game:
+            self.tampilkan_board()
+            try:
+                y = int(input("Masukkan baris (1-3): "))
+                x = int(input("Masukkan kolom (1-3): "))
+                self.buka_kotak(y, x)
+            except ValueError:
+                print("Hanya boleh angka, bestie!")
+
+if __name__ == "__main__":
+    misi = minesweeper()
+    misi.play()
