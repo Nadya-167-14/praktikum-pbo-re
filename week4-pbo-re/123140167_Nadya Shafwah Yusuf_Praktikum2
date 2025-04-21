@@ -1,0 +1,148 @@
+import random
+
+class Hangman:
+    def __init__(self):
+        self.words = [
+            'algorithm', 'binary', 'boolean', 'byte', 'cache', 'compiler', 'debugger',
+            'encryption', 'framework', 'function', 'garbage', 'hash', 'index', 'iterator',
+            'javascript', 'json', 'library', 'loop', 'namespace', 'object', 'operator',
+            'overload', 'polymorphism', 'queue', 'recursion', 'serialization', 'stack',
+            'template', 'variable', 'virtual', 'web', 'xml', 'yaml', 'zip'
+        ]
+        self.max_attempts = 8  # maksimal kesalahan
+        self.attempts = 0  # jumlah kesalahan
+        self.word_to_guess = random.choice(self.words)  # kata yang akan ditebak
+        self.guessed_letters = []  # huruf yang sudah ditebak
+        self.correct_guesses = ['_'] * len(self.word_to_guess)  # menandakan posisi yang sudah ditebak
+        self.game_over = False
+
+        # Visualisasi hangman, setiap indeks menambah bagian tubuh
+        self.hangman_graphics = [
+            """
+            ------
+            |    |
+            |    
+            |   
+            |   
+            |   
+            |
+        ------------
+            """,
+            """
+            ------
+            |    |
+            |    O
+            |   
+            |   
+            |   
+            |
+        ------------
+            """,
+            """
+            ------
+            |    |
+            |    O
+            |    |
+            |   
+            |   
+            |
+        ------------
+            """,
+            """
+            ------
+            |    |
+            |    O
+            |   -|
+            |   
+            |   
+            |
+        ------------
+            """,
+            """
+            ------
+            |    |
+            |    O
+            |   -|-
+            |   
+            |   
+            |
+        ------------
+            """,
+            """
+            ------
+            |    |
+            |    O
+            |   -|-
+            |    |
+            |   
+            |
+        ------------
+            """,
+            """
+            ------
+            |    |
+            |    O
+            |   -|-
+            |    |
+            |   / 
+            |
+        ------------
+            """,
+            """
+            ------
+            |    |
+            |    O
+            |   -|-
+            |    |
+            |   / \\
+            |
+        ------------
+            """
+        ]
+
+    def display_game(self):
+        print(self.hangman_graphics[self.attempts])  # menampilkan visualisasi hangman
+        print("\nCurrent word: " + ' '.join(self.correct_guesses))
+        print(f"Attempt(s) left: {self.max_attempts - self.attempts}")
+        print(f"Guessed letters: {', '.join(self.guessed_letters)}")
+
+    def guess(self, letter):
+        if letter in self.guessed_letters:
+            print(f"You've already guessed '{letter}'!")
+            return
+        self.guessed_letters.append(letter)
+
+        if letter in self.word_to_guess:
+            print(f"Good guess! '{letter}' is in the word.")
+            for index, char in enumerate(self.word_to_guess):
+                if char == letter:
+                    self.correct_guesses[index] = letter
+        else:
+            self.attempts += 1
+            print(f"Wrong guess! '{letter}' is not in the word.")
+        
+        self.check_game_status()
+
+    def check_game_status(self):
+        if '_' not in self.correct_guesses:
+            self.game_over = True
+            print(f"\nCongratulations! You've guessed the word '{self.word_to_guess}' correctly.")
+        elif self.attempts >= self.max_attempts:
+            self.game_over = True
+            print(f"\nGame Over! The correct word was '{self.word_to_guess}'. Better luck next time!")
+
+    def play(self):
+        print("Welcome to Hangman!")
+        while not self.game_over:
+            self.display_game()
+            guess = input("Guess a letter: ").lower()
+
+            if len(guess) != 1 or not guess.isalpha():
+                print("Please enter a single valid letter.")
+                continue
+
+            self.guess(guess)
+
+if __name__ == "__main__":
+    game = Hangman()
+    game.play()
