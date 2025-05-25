@@ -1,0 +1,38 @@
+import math
+
+class kalku:
+    def __init__(self, value):
+        self.value = value
+
+    def __add__(self, other):
+        return kalku(self.value + other.value)
+
+    def __sub__(self, other):
+        return kalku(self.value - other.value)
+
+    def __mul__(self, other):
+        return kalku(self.value * other.value)
+
+    def __truediv__(self, other):
+        return kalku(self.value / other.value)
+
+    def __pow__(self, other):
+        return kalku(self.value ** other.value)
+
+    def log(self):
+        return math.log(self.value)
+
+    def __str__(self):
+        return str(self.value)
+
+a = kalku(10)
+b = kalku(5)
+c = kalku(7)
+d = kalku(2)
+
+print((a + b))     
+print((a - b))      
+print((c * d))     
+print((c / d))     
+print((a ** b))     
+print(a.log())      
