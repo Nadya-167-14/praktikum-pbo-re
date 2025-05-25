@@ -1,0 +1,38 @@
+import random
+
+class Parent:
+    def __init__(self, goldar):
+        self.goldar = goldar  
+
+class Ayah(Parent):
+    pass
+
+class Ibu(Parent):
+    pass
+
+class Child:
+    def __init__(self, ayah: Ayah, ibu: Ibu):
+        self.ayah = ayah
+        self.ibu = ibu
+        self.goldar = [random.choice(self.ayah.goldar), random.choice(self.ibu.goldar)]
+        self.golongan = self.determine_golongan()
+
+    def determine_golongan(self):
+        alel = set(self.goldar)
+        if 'A' in alel and 'B' in alel:
+            return 'AB'
+        elif 'A' in alel:
+            return 'A'
+        elif 'B' in alel:
+            return 'B'
+        else:
+            return 'O'
+
+    def __str__(self):
+        return f"Alel: {self.goldar} → Golongan darah anak: {self.golongan}"
+
+ayah = Ayah(['A', 'O'])
+ibu = Ibu(['B', 'O'])
+
+anak = Child(ayah, ibu)
+print(anak)
